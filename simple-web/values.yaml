@@ -1,0 +1,9 @@
+image:
+  repository: teacherssamko/simple-web
+  tag: v1
+  pullPolicy: IfNoPresent
+
+replicas: 3
+
+type:
+  lb: LoadBalancer
