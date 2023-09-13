@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: lion-app
+  labels:
+    app: lion-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: lion-app
+  template:
+    metadata:
+      labels:
+        app: lion-app
+    spec:
+      imagePullSecrets:
+        - name: regcred
+      containers:
+        - name: lion-app
+          image: lion-cr.kr.ncr.ntruss.com/lion-app:latest
+          imagePullPolicy: Always
+          envFrom:
+            - secretRef:
+                name: django-secret
+            - secretRef:
+                name: db-secret
+            - configMapRef:
+                name: django-config
+          ports:
+            - containerPort: 8000
