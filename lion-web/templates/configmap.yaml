@@ -1,0 +1,61 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+    name: {{ .Release.Name }}-configmap
+    # labels:
+    #     {{ include "lion-web.app" . | indent 8 }}
+data:
+    myvalue: "Hello world"
+    {{- $relname := .Release.Name -}}
+    drink: {{ .Values.favorites.drink | default "tea" | quote }}
+    # values.yaml 파일에 
+    # favoriteDrink: coffee 저장 후
+    # helm install cafe ./mychart
+    # k get configmap -> cafe-configmap, DATA=2 확인
+
+    # k describe configmap cafe-configmap 
+    # 으로 들어가서 DATA를 확인한다.
+
+# helm list --all -> 만든 helm list를 보여준다
+# helm uninstall cafe monkey tiger (모두 지워준다)
+    food: {{ .Values.favorites.food | upper | quote }}
+    release: {{ $relname }}
+    # values.yaml 파일에 favoriteFood: pizza
+
+    # helm install --debug --dry-run cafe ./mychart
+    # 어떤 값들이 변환되고 MANIFEST가 어떻게 작성되는지 미리 볼 수 있다.
+    
+    # quote를 추가하면 " " (double quotes)가 추가된다
+    # 같은결과:
+    # drink: {{ .Values.favoriteDrink | quote }}
+    # food: {{ quote.Values.favoriteFood }} 
+
+    # repeat 5 는 5번 문자가 반복
+    # default는 .Values.favoriteDrink 이 없으면 설정된 "tea" 값이 대신 들어간다
+    # values.yaml 에서 favoriteDrink를 주석처리하고 (없애고) 실행시키면 default값이 들어간다
+
+    # values.yaml 에 추가
+    # favorites:
+    #    drink: coffee
+    #    food: pizza
+
+    # food: {{ quote.Values.favoriteFood.food | upper}}
+    #{{- if eq .Values.favorites.drink "coffee" }} 
+    #mug: true
+    #{{- end }}
+    # -는 템플릿 앞에 있는 빈 공간을 없애주는데 역할은 줄바꿈 제거
+    
+    {{- range $key, $val := .Values.favorites }}
+    {{ $key }}: {{ $val | quote }}
+    {{- end }}
+    # helm install --debug --dry-run cafe ./mychart 로 체크
+    toppings: |-
+        {{- range $index, $topping := .Values.pizzaToppings }}
+        {{ $index }}: {{ $topping | title | quote }}
+        {{- end }}
+    # title -> 맨 앞은 uppercase
+    sizes: |-
+        {{- range tuple "small" "medium" "large" }}
+        - {{ . }}
+        {{- end }}
+    # {{ include "lion-web.app" . | indent 4 }}
