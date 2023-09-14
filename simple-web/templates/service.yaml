@@ -2,10 +2,12 @@ apiVersion: v1
 kind: Service
 metadata:
   name: {{ .Release.Name }}
+  labels:
+    {{- include "simple-web.labels" . | indent 4 }}
 spec:
   type: {{ .Values.type.lb }}
   selector:
-    app: {{ .Release.Name }}
+    {{- include "simple-web.selectorLabels" . | indent 4 }}
   ports:
     - port: 80
       targetPort: 8000
