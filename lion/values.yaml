@@ -1,0 +1,20 @@
+replicaCount: 1
+
+image:
+  repository: lion-cr.kr.ncr.ntruss.com/lion-app
+  pullPolicy: IfNotPresent
+  tag: ""
+
+imagePullSecrets:
+  - name: regcred
+nameOverride: ""
+fullnameOverride: ""
+
+service:
+  type: LoadBalancer
+  port: 80
+
+containerPort: 8000
+
+configMap:
+  django: "django-configmap"
