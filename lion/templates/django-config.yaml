@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ .Values.configMap.django }}
+  name: {{ include "lion.fullname" . }}
 data:
 #   DB_HOST: "db-nodeport"
   DJANGO_SETTINGS_MODULE: "lion_app.settings.test"

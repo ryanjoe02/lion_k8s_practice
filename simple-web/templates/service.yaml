@@ -3,11 +3,11 @@ kind: Service
 metadata:
   name: {{ .Release.Name }}
   labels:
-    {{- include "simple-web.labels" . | indent 4 }}
+    {{- include "simple-web.labels" . | nindent 4 }}
 spec:
-  type: {{ .Values.type.lb }}
+  type: {{ .Values.service.type }}
   selector:
-    {{- include "simple-web.selectorLabels" . | indent 4 }}
+    {{- include "simple-web.selectorLabels" . | nindent 4}}
   ports:
     - port: 80
       targetPort: 8000

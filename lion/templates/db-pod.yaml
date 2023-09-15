@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: {{ include "lion.db.fullname" . }}
+  labels:
+    {{- include "lion.db.labels" . | nindent 4 }}
+spec:
+  containers:
+    - name: {{ include "lion.db.fullname" . }}
+      image: postgres:13
+      env:
+        - name: PGDATA
+          value: "/var/lib/postgresql/data/k8s"
+      envFrom:
+        - secretRef:
+            name: {{ include "lion.db.fullname" . }}
+      ports:
+        - containerPort: 5432
+      volumeMounts:
+        - mountPath: "/var/lib/postgresql/data"
+          name: postgres-data
+  volumes:
+    - name: postgres-data
+      persistentVolumeClaim:
+        claimName: db-pod-pvc

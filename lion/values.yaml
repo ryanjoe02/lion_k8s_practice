@@ -1,7 +1,7 @@
 replicaCount: 1
 
 image:
-  repository: lion-cr.kr.ncr.ntruss.com/lion-app
+  repository: lion-cr01.kr.ncr.ntruss.com/lion-app
   pullPolicy: IfNotPresent
   tag: ""
 
@@ -18,3 +18,7 @@ containerPort: 8000
 
 configMap:
   django: "django-configmap"
+
+secret:
+  django: "django-secret"
+  db: "db-secret"

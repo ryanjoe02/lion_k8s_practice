@@ -23,6 +23,15 @@ If release name contains chart name it will be used as a full name.
 {{- end }}
 {{- end }}
 
+{{- define "lion.db.fullname" -}}
+{{- $name := .Chart.Name }}
+{{- if contains $name .Release.Name }}
+{{- printf "%s-%s" "db" .Release.Name | trunc 63 | trimSuffix "-" }}
+{{- else }}
+{{- printf "%s-%s-%s" "db" .Release.Name $name | trunc 63 | trimSuffix "-" }}
+{{- end }}
+{{- end }}
+
 {{/*
 Create chart name and version as used by the chart label.
 */}}
@@ -48,4 +57,12 @@ Selector labels
 {{- define "lion.selectorLabels" -}}
 app.kubernetes.io/name: {{ include "lion.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
+{{- end }}
+
+
+{{- define "lion.db.labels" -}}
+helm.sh/chart: {{ include "lion.chart" . }}
+app: db-{{ .Release.Name }}
+release: {{ .Release.Name }}
+app.kubernetes.io/managed-by: helm
 {{- end }}

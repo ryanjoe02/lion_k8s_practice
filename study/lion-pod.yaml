@@ -9,7 +9,7 @@ spec:
     - name: regcred
   containers:
     - name: lion-app
-      image: lion-cr.kr.ncr.ntruss.com/lion-app:latest
+      image: lion-cr01.kr.ncr.ntruss.com/lion-app:latest
       imagePullPolicy: Always
       envFrom:
         - secretRef:

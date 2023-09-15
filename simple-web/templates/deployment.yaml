@@ -3,16 +3,17 @@ kind: Deployment
 metadata:
   name: {{ .Release.Name }}
   labels:
-    {{- include "simple-web.labels" . | indent 4 }}
+    {{- include "simple-web.labels" . | nindent 4 }}
 spec:
+  minReadySeconds: 10
   replicas: {{ .Values.replicas }}
   selector:
     matchLabels:
-      {{- include "simple-web.selectorLabels" . | indent 6 }}
+      {{- include "simple-web.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
-        {{- include "simple-web.selectorLabels" . | indent 8 }}
+        {{- include "simple-web.selectorLabels" . | nindent 8 }}
     spec:
       containers:
         - name: {{ .Release.Name }}
@@ -24,4 +25,5 @@ spec:
             httpGet:
               path: /
               port: 8000
-            initialDelaySeconds: 5
+            initialDelaySeconds: 0
+            periodSeconds: 1
